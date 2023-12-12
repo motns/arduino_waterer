@@ -6,12 +6,6 @@ Copyright (c) 2023 Adam Borocz
 #define GUARD_4C284DA2_B6C7_4F1E_89EB_3FF54900B14F_H_
 #include <Wire.h>
 
-#ifdef ARDUINO_SAMD_VARIANT_COMPLIANCE
-#define SERIAL SerialUSB
-#else
-#define SERIAL Serial
-#endif
-
 #define NO_TOUCH       0xFE
 #define THRESHOLD      100
 #define ATTINY1_HIGH_ADDR   0x78
