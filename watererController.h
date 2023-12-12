@@ -26,7 +26,7 @@ const int PROGMEM moisture2Pin = A6;
 
 const long PROGMEM pump1CheckInterval = 60000;  // How frequently to check whether pump needs to be triggered
 const int PROGMEM moisture1TriggerThreshold = 50;  // Only auto trigger pump below this threshold
-const long PROGMEM pump2CheckInterval = 60000;
+const long PROGMEM pump2CheckInterval = 67000;
 const int PROGMEM moisture2TriggerThreshold = 50;
 
 const int PROGMEM warnPercentage = 50;
