@@ -40,8 +40,8 @@ class WatererController {
     int* moisture2Pct,
     bool* pump1On,
     bool* pump2On,
-    long* pump1MsSinceLastRun,
-    long* pump2MsSinceLastRun,
+    int* pump1SecsSinceLastRun,
+    int* pump2SecsSinceLastRun,
     int maxWaterLevel = 80,  // At what sensor percentage is the water tank full (find via testing)
     int pumpFlowRate = 8,  // In mL/s (find via testing)
     bool isPlant2Enabled = true  // Set to false if only one plant is being monitored/watered
@@ -52,11 +52,13 @@ class WatererController {
     this->pump1On = pump1On;
     prevPump1On = false;
     pump1LastRunMs = 0;
-    this->pump1MsSinceLastRun = pump1MsSinceLastRun;
+    this->pump1MsSinceLastRun = 0;
+    this->pump1SecsSinceLastRun = pump1SecsSinceLastRun;
     this->pump2On = pump2On;
     prevPump2On = false;
     pump2LastRunMs = 0;
-    this->pump2MsSinceLastRun = pump2MsSinceLastRun;
+    this->pump2MsSinceLastRun = 0;
+    this->pump2SecsSinceLastRun = pump2SecsSinceLastRun;
     this->maxWaterLevel = maxWaterLevel;
     this->pumpFlowRate = pumpFlowRate;
     this->isPlant2Enabled = isPlant2Enabled;
@@ -129,11 +131,13 @@ class WatererController {
   bool* pump1On;
   bool prevPump1On;
   long pump1LastRunMs;
-  long* pump1MsSinceLastRun;
+  long pump1MsSinceLastRun;
+  int* pump1SecsSinceLastRun;
   bool* pump2On;
   bool prevPump2On;
   long pump2LastRunMs;
-  long* pump2MsSinceLastRun;
+  long pump2MsSinceLastRun;
+  int* pump2SecsSinceLastRun;
   long pump1OffAtMillis;
   long pump2OffAtMillis;
 
@@ -234,7 +238,7 @@ class WatererController {
     if (
       !*pump1On
       && *moisture1Pct < moisture1TriggerThreshold
-      && pump1CheckInterval < *pump1MsSinceLastRun
+      && pump1CheckInterval < pump1MsSinceLastRun
     ) {
       *pump1On = true;
     }
@@ -242,7 +246,7 @@ class WatererController {
     if (
       !*pump2On
       && *moisture2Pct < moisture2TriggerThreshold
-      && pump2CheckInterval < *pump2MsSinceLastRun
+      && pump2CheckInterval < pump2MsSinceLastRun
     ) {
       *pump2On = true;
     }
@@ -506,8 +510,10 @@ class WatererController {
   void updatePumps() {
     updatePump(plantOne);
     updatePump(plantTwo);
-    *pump1MsSinceLastRun = currentMillis - pump1LastRunMs;
-    *pump2MsSinceLastRun = currentMillis - pump2LastRunMs;
+    pump1MsSinceLastRun = currentMillis - pump1LastRunMs;
+    *pump1SecsSinceLastRun = pump1MsSinceLastRun / 1000;
+    pump2MsSinceLastRun = currentMillis - pump2LastRunMs;
+    *pump2SecsSinceLastRun = pump2MsSinceLastRun / 1000;
   }
 
   void updatePump(Plant plant) {

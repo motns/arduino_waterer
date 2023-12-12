@@ -4,7 +4,6 @@ Copyright (c) 2023 Adam Borocz
 */
 #ifndef GUARD_E513344B_9711_4050_80AC_C4B095D3F0B3_H_
 #define GUARD_E513344B_9711_4050_80AC_C4B095D3F0B3_H_
-# include <stdexcept>
 
 class MoistureSensor {
  public:
